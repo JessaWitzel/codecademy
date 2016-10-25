@@ -1,50 +1,36 @@
-#my version of the Codecademy Battleship exercise where you can have as many turns as you want
+#terminal battleship game
 
 from random import randint
 
-board = []
-
-for x in range(0, 5):
-    board.append(["O"] * 5)
+game_board = []
+for x in range(0,5):
+    game_board.append(['0'] * 5)
 
 def print_board(board):
     for row in board:
-        print " ".join(row)
+        print ' '.join(row)
 
-def random_row(board):
-    return randint(0, len(board) - 1)
+def game():
+    turns = int(raw_input('How many turns would you like? '))
+    for x in range(0,turns):
+        print "This is turn: " + str(x + 1)
+        print_board(game_board)
+        print "Tell us what row and column you think the ship is hiding in."
+        guess_row = int(raw_input("Row: "))
+        guess_col = int(raw_input("Column: "))
+        battle(guess_row, guess_col, x)
 
-def random_col(board):
-    return randint(0, len(board[0]) - 1)
+ship_row = randint(1,5)
+ship_col = randint(1,5)
 
-ship_row = random_row(board)
-ship_col = random_col(board)
-
-def play(gameplay):
-    for turn in range(gameplay):
-        print "Turn " + str(turn + 1)
-        guess_row = int(raw_input("Guess Row:"))
-        guess_col = int(raw_input("Guess Col:"))
-        guesses(guess_row, guess_col, turn, gameplay)
-
-def guesses(row, column, turn, gameplay):
+def battle(row, column, x):
     if row == ship_row and column == ship_col:
-        print "Congratulations! You sank my battleship"
+        print "You sunk my battleship!"
         exit()
-    elif row not in range(5) or column not in range(5):
-            print "Oops, that's not even in the ocean."
-    elif board[row][column] == "X":
-            print "You guessed that one already."
-    else:
-        print "You missed my battleship!"
-        board[row][column] = "X"
-        print_board(board)
-        if turn == gameplay - 1:
-            print "Game Over"
-        else:
-            pass
+    elif game_board[row - 1][column - 1] == '0':
+        print "There is no ship there."
+        game_board[row - 1][column - 1] = 'X'
+    elif game_board[row - 1][column - 1] == 'X':
+        print "You already guessed that. Try again!"
 
-wanted_turns = int(raw_input("How many turns do you want?: "))
-print_board(board)
-play(wanted_turns)
-# Ideas to keep working on: 2 player game; multiple ships; multiple size ships
+game()
